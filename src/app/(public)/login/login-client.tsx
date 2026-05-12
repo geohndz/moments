@@ -204,8 +204,13 @@ export function LoginClient() {
           </form>
         ) : !configured ? (
           <p className="mt-6 text-center text-sm text-[var(--fg-muted)]">
-            Configure Firebase in{" "}
-            <code className="rounded bg-[var(--surface-2)] px-1">.env.local</code> first.
+            Firebase keys aren&apos;t loading. Add every{" "}
+            <code className="rounded bg-[var(--surface-2)] px-1">NEXT_PUBLIC_FIREBASE_*</code>{" "}
+            value from <code className="rounded bg-[var(--surface-2)] px-1">.env.example</code>{" "}
+            into <code className="rounded bg-[var(--surface-2)] px-1">.env.local</code> at the
+            project root, then <strong className="text-[var(--fg)]">restart</strong>{" "}
+            <code className="rounded bg-[var(--surface-2)] px-1">npm run dev</code> (Next only
+            reads env when the server starts).
           </p>
         ) : (
           <>

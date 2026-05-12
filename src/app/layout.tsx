@@ -3,6 +3,7 @@ import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { cn } from "@/lib/cn";
+import { FirebaseConfigScript } from "@/components/firebase-config-script";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -38,6 +39,7 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-dvh font-sans">
+        <FirebaseConfigScript />
         <Providers>{children}</Providers>
       </body>
     </html>

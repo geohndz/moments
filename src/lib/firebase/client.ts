@@ -2,11 +2,12 @@ import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getFirebasePublicConfig } from "@/lib/firebase/public-config";
 
 let app: FirebaseApp | null = null;
 
 export function isFirebaseConfigured(): boolean {
-  return Boolean(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+  return Boolean(getFirebasePublicConfig().apiKey);
 }
 
 export function getFirebaseApp(): FirebaseApp {
@@ -19,20 +20,20 @@ export function getFirebaseApp(): FirebaseApp {
     return app;
   }
 
-  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
-  if (!apiKey) {
+  const cfg = getFirebasePublicConfig();
+  if (!cfg.apiKey) {
     throw new Error(
-      "Firebase is not configured. Add NEXT_PUBLIC_* keys from .env.example to .env.local.",
+      "Firebase is not configured. Add NEXT_PUBLIC_* keys from .env.example to .env.local, then restart the dev server.",
     );
   }
 
   app = initializeApp({
-    apiKey,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+    apiKey: cfg.apiKey,
+    authDomain: cfg.authDomain,
+    projectId: cfg.projectId,
+    storageBucket: cfg.storageBucket,
+    messagingSenderId: cfg.messagingSenderId,
+    appId: cfg.appId,
   });
   return app;
 }
