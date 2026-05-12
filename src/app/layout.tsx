@@ -29,9 +29,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${manrope.variable} ${fraunces.variable} h-full min-h-dvh antialiased`}
     >
-      <body className="min-h-full font-sans">
+      <body className="min-h-dvh font-sans">
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -1,18 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f7f1f1;
+  --bg: #f2eaea;
   --surface: #fffbfb;
-  --surface-2: #f2e8e8;
+  --surface-2: #f0e4e4;
   --fg: #2a1f22;
   --fg-muted: #6a5559;
-  --accent: #b84040;
-  --accent-soft: rgba(184, 64, 64, 0.14);
+  /* Logo red + darker mesh tones */
+  --red-logo: #ea1b1b;
+  --accent: #ea1b1b;
+  --accent-soft: rgba(234, 27, 27, 0.13);
+  --mesh-a: color-mix(in oklab, #ea1b1b 38%, #1a0505);
+  --mesh-b: color-mix(in oklab, #ea1b1b 28%, #120303);
+  --mesh-c: color-mix(in oklab, #ea1b1b 22%, #0d0202);
+  --mesh-d: color-mix(in oklab, #ea1b1b 32%, #140404);
+  --mesh-opacity-a: 0.22;
+  --mesh-opacity-b: 0.18;
+  --mesh-opacity-c: 0.14;
+  --mesh-opacity-d: 0.12;
   --shadow-polaroid: 0 22px 55px rgba(36, 18, 22, 0.12),
     0 4px 14px rgba(36, 18, 22, 0.07);
   --heading-letter-spacing: -0.061em;
-  /* Use unitless line-height so it scales with each heading size. If you need literal 536pt or 53.6pt instead, change this. */
   --heading-line-height: 1.536;
+  --grain-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
 
 @theme inline {
@@ -24,57 +34,185 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #161012;
-    --surface: #1f181a;
-    --surface-2: #2a1f22;
+    --bg: #100c0e;
+    --surface: #1a1416;
+    --surface-2: #241c1e;
     --fg: #f5eae9;
     --fg-muted: #b09a9d;
-    --accent: #e08585;
-    --accent-soft: rgba(224, 133, 133, 0.16);
+    --accent: #ea1b1b;
+    --accent-soft: rgba(234, 27, 27, 0.18);
+    --mesh-a: color-mix(in oklab, #ea1b1b 25%, #000);
+    --mesh-b: color-mix(in oklab, #ea1b1b 18%, #000);
+    --mesh-c: color-mix(in oklab, #ea1b1b 14%, #000);
+    --mesh-d: color-mix(in oklab, #ea1b1b 22%, #000);
+    --mesh-opacity-a: 0.35;
+    --mesh-opacity-b: 0.28;
+    --mesh-opacity-c: 0.22;
+    --mesh-opacity-d: 0.18;
     --shadow-polaroid: 0 22px 55px rgba(0, 0, 0, 0.45),
       0 6px 16px rgba(0, 0, 0, 0.35);
   }
 }
 
+html {
+  height: 100%;
+  min-height: 100dvh;
+  min-height: 100svh;
+  background-color: var(--bg);
+}
+
 body {
   position: relative;
-  min-height: 100vh;
+  isolation: isolate;
+  margin: 0;
+  min-height: 100%;
   min-height: 100dvh;
+  min-height: 100svh;
+  width: 100%;
+  overflow-x: clip;
   background-color: var(--bg);
   color: var(--fg);
 }
 
+/* Animated mesh gradient — full viewport, darker reds */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  height: 100%;
+  z-index: -2;
   pointer-events: none;
-  background: radial-gradient(
-    1200px 700px at 20% -10%,
-    var(--accent-soft),
-    transparent 72%
-  );
-  transform-origin: 30% 20%;
-  animation: moments-bg-drift 52s ease-in-out infinite alternate;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(
+      ellipse 125% 95% at 12% 18%,
+      color-mix(in oklab, var(--mesh-a) calc(var(--mesh-opacity-a) * 100%), transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 110% 85% at 92% 12%,
+      color-mix(in oklab, var(--mesh-b) calc(var(--mesh-opacity-b) * 100%), transparent),
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 100% 75% at 48% 108%,
+      color-mix(in oklab, var(--mesh-c) calc(var(--mesh-opacity-c) * 100%), transparent),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse 85% 70% at 72% 52%,
+      color-mix(in oklab, var(--mesh-d) calc(var(--mesh-opacity-d) * 100%), transparent),
+      transparent 55%
+    );
+  background-size: 145% 145%, 135% 135%, 155% 155%, 125% 125%;
+  background-position: 0% 0%, 100% 0%, 50% 100%, 85% 45%;
+  background-repeat: no-repeat;
+  animation: moments-mesh 42s ease-in-out infinite alternate;
 }
 
-@keyframes moments-bg-drift {
+@keyframes moments-mesh {
   0% {
-    transform: translate3d(-3%, -2%, 0) scale(1);
-    opacity: 0.92;
+    background-position: 0% 0%, 100% 0%, 50% 100%, 85% 45%;
+    background-size: 145% 145%, 135% 135%, 155% 155%, 125% 125%;
+  }
+  33% {
+    background-position: 35% 25%, 65% 35%, 15% 75%, 95% 55%;
+    background-size: 160% 150%, 125% 145%, 140% 165%, 135% 140%;
+  }
+  66% {
+    background-position: 70% 10%, 20% 80%, 85% 30%, 30% 85%;
+    background-size: 135% 155%, 150% 130%, 165% 150%, 150% 135%;
   }
   100% {
-    transform: translate3d(5%, 4%, 0) scale(1.07);
-    opacity: 1;
+    background-position: 100% 45%, 0% 70%, 70% 0%, 40% 100%;
+    background-size: 150% 140%, 140% 160%, 130% 145%, 160% 150%;
+  }
+}
+
+/* Animated film grain */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.09;
+  mix-blend-mode: soft-light;
+  background-image: var(--grain-svg);
+  background-repeat: repeat;
+  background-size: 280px 280px;
+  animation: moments-grain 0.55s steps(10) infinite;
+}
+
+@keyframes moments-grain {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-1.2%, -0.8%);
+  }
+  20% {
+    transform: translate(0.9%, -1.4%);
+  }
+  30% {
+    transform: translate(-0.6%, 1.1%);
+  }
+  40% {
+    transform: translate(1.3%, 0.5%);
+  }
+  50% {
+    transform: translate(-1%, 1.2%);
+  }
+  60% {
+    transform: translate(0.4%, -1%);
+  }
+  70% {
+    transform: translate(-1.4%, -0.3%);
+  }
+  80% {
+    transform: translate(1.1%, 1%);
+  }
+  90% {
+    transform: translate(-0.5%, 0.7%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body::after {
+    opacity: 0.11;
+    mix-blend-mode: overlay;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before {
+  body::before,
+  body::after {
     animation: none;
+  }
+
+  body::before {
+    background-position: 0% 0%, 100% 0%, 50% 100%, 85% 45%;
+    background-size: 145% 145%, 135% 135%, 155% 155%, 125% 125%;
+  }
+
+  body::after {
     transform: none;
-    opacity: 1;
   }
 }
 
