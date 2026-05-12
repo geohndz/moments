@@ -10,18 +10,15 @@
   --red-logo: #ea1b1b;
   --accent: #ea1b1b;
   --accent-soft: rgba(234, 27, 27, 0.13);
-  --mesh-a: color-mix(in oklab, #ea1b1b 38%, #1a0505);
-  --mesh-b: color-mix(in oklab, #ea1b1b 28%, #120303);
-  --mesh-c: color-mix(in oklab, #ea1b1b 22%, #0d0202);
-  --mesh-d: color-mix(in oklab, #ea1b1b 32%, #140404);
-  --mesh-opacity-a: 0.22;
-  --mesh-opacity-b: 0.18;
-  --mesh-opacity-c: 0.14;
-  --mesh-opacity-d: 0.12;
+  /* Mesh blobs — explicit rgba so gradients always paint (no color-mix+calc bugs) */
+  --mesh-blob-1: rgba(115, 18, 18, 0.38);
+  --mesh-blob-2: rgba(85, 12, 12, 0.32);
+  --mesh-blob-3: rgba(145, 22, 22, 0.26);
+  --mesh-blob-4: rgba(65, 10, 10, 0.22);
   --shadow-polaroid: 0 22px 55px rgba(36, 18, 22, 0.12),
     0 4px 14px rgba(36, 18, 22, 0.07);
   --heading-letter-spacing: -0.061em;
-  --heading-line-height: 1.536;
+  --heading-line-height: 1.08;
   --grain-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
 
@@ -41,14 +38,10 @@
     --fg-muted: #b09a9d;
     --accent: #ea1b1b;
     --accent-soft: rgba(234, 27, 27, 0.18);
-    --mesh-a: color-mix(in oklab, #ea1b1b 25%, #000);
-    --mesh-b: color-mix(in oklab, #ea1b1b 18%, #000);
-    --mesh-c: color-mix(in oklab, #ea1b1b 14%, #000);
-    --mesh-d: color-mix(in oklab, #ea1b1b 22%, #000);
-    --mesh-opacity-a: 0.35;
-    --mesh-opacity-b: 0.28;
-    --mesh-opacity-c: 0.22;
-    --mesh-opacity-d: 0.18;
+    --mesh-blob-1: rgba(200, 35, 35, 0.28);
+    --mesh-blob-2: rgba(170, 28, 28, 0.24);
+    --mesh-blob-3: rgba(220, 40, 40, 0.2);
+    --mesh-blob-4: rgba(150, 24, 24, 0.18);
     --shadow-polaroid: 0 22px 55px rgba(0, 0, 0, 0.45),
       0 6px 16px rgba(0, 0, 0, 0.35);
   }
@@ -63,57 +56,44 @@ html {
 
 body {
   position: relative;
-  isolation: isolate;
+  z-index: 1;
   margin: 0;
   min-height: 100%;
   min-height: 100dvh;
   min-height: 100svh;
   width: 100%;
   overflow-x: clip;
-  background-color: var(--bg);
+  /* Transparent so html mesh + grain show through */
+  background-color: transparent;
   color: var(--fg);
 }
 
-/* Animated mesh gradient — full viewport, darker reds */
-body::before {
+/*
+ * Mesh on html::before (z-index 0) sits above the flat html background.
+ * Body is z-index 1 with transparent fill so the mesh stays visible.
+ */
+html::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  max-width: 100%;
+  width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   min-height: 100svh;
   height: 100%;
-  z-index: -2;
+  z-index: 0;
   pointer-events: none;
-  background-color: var(--bg);
+  background-color: transparent;
   background-image:
-    radial-gradient(
-      ellipse 125% 95% at 12% 18%,
-      color-mix(in oklab, var(--mesh-a) calc(var(--mesh-opacity-a) * 100%), transparent),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse 110% 85% at 92% 12%,
-      color-mix(in oklab, var(--mesh-b) calc(var(--mesh-opacity-b) * 100%), transparent),
-      transparent 52%
-    ),
-    radial-gradient(
-      ellipse 100% 75% at 48% 108%,
-      color-mix(in oklab, var(--mesh-c) calc(var(--mesh-opacity-c) * 100%), transparent),
-      transparent 48%
-    ),
-    radial-gradient(
-      ellipse 85% 70% at 72% 52%,
-      color-mix(in oklab, var(--mesh-d) calc(var(--mesh-opacity-d) * 100%), transparent),
-      transparent 55%
-    );
+    radial-gradient(ellipse 125% 95% at 12% 18%, var(--mesh-blob-1), transparent 58%),
+    radial-gradient(ellipse 110% 85% at 92% 12%, var(--mesh-blob-2), transparent 52%),
+    radial-gradient(ellipse 100% 75% at 48% 108%, var(--mesh-blob-3), transparent 48%),
+    radial-gradient(ellipse 85% 70% at 72% 52%, var(--mesh-blob-4), transparent 55%);
   background-size: 145% 145%, 135% 135%, 155% 155%, 125% 125%;
   background-position: 0% 0%, 100% 0%, 50% 100%, 85% 45%;
   background-repeat: no-repeat;
-  animation: moments-mesh 42s ease-in-out infinite alternate;
+  animation: moments-mesh 28s ease-in-out infinite alternate;
 }
 
 @keyframes moments-mesh {
@@ -149,11 +129,11 @@ body::after {
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.09;
-  mix-blend-mode: soft-light;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
   background-image: var(--grain-svg);
   background-repeat: repeat;
-  background-size: 280px 280px;
+  background-size: 160px 160px;
   animation: moments-grain 0.55s steps(10) infinite;
 }
 
@@ -195,18 +175,18 @@ body::after {
 
 @media (prefers-color-scheme: dark) {
   body::after {
-    opacity: 0.11;
-    mix-blend-mode: overlay;
+    opacity: 0.26;
+    mix-blend-mode: soft-light;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before,
+  html::before,
   body::after {
     animation: none;
   }
 
-  body::before {
+  html::before {
     background-position: 0% 0%, 100% 0%, 50% 100%, 85% 45%;
     background-size: 145% 145%, 135% 135%, 155% 155%, 125% 125%;
   }
