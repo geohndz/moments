@@ -6,6 +6,7 @@ import Link from "next/link";
 import { signInWithGoogle } from "@/lib/firebase/auth-google";
 import { useAuth } from "@/contexts/auth-context";
 import { FreehandIcon } from "@/components/ui/freehand-icon";
+import { MomentsWordmark } from "@/components/ui/moments-logo";
 
 export function LoginClient() {
   const { configured, user, loading } = useAuth();
@@ -49,14 +50,14 @@ export function LoginClient() {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm rounded-2xl border border-[color-mix(in_oklab,var(--fg)_8%,transparent)] bg-[var(--surface)] p-8 shadow-[var(--shadow-polaroid)]">
-        <p className="text-center text-xs tracking-[0.3em] uppercase text-[var(--fg-muted)]">
-          Moments
-        </p>
+        <div className="flex justify-center">
+          <MomentsWordmark />
+        </div>
         <h1 className="mt-3 text-center text-2xl font-light text-[var(--fg)]">
-          Welcome back
+          Hey — it&apos;s us
         </h1>
         <p className="mt-2 text-center text-sm text-[var(--fg-muted)]">
-          Sign in with Google to open a shared album.
+          Sign in with Google to open our album together.
         </p>
 
         {!configured ? (

@@ -15,7 +15,7 @@ export default function AlbumSectionLayout({ children }: { children: ReactNode }
       <AppHeader>
         <AlbumTabs />
         <p className="mt-2 text-sm text-[var(--fg)]">
-          {loading ? "Loading album…" : album?.title ?? "Album"}
+          {loading ? "Loading our album…" : album?.title ?? "Our album"}
         </p>
       </AppHeader>
       <div className="flex-1">{children}</div>

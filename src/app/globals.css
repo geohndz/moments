@@ -35,9 +35,45 @@
 }
 
 body {
-  background: radial-gradient(1200px 700px at 20% -10%, var(--accent-soft), transparent),
-    var(--bg);
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--bg);
   color: var(--fg);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    1200px 700px at 20% -10%,
+    var(--accent-soft),
+    transparent 72%
+  );
+  transform-origin: 30% 20%;
+  animation: moments-bg-drift 52s ease-in-out infinite alternate;
+}
+
+@keyframes moments-bg-drift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+    opacity: 0.92;
+  }
+  100% {
+    transform: translate3d(5%, 4%, 0) scale(1.07);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 h1,

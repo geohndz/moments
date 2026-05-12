@@ -52,7 +52,7 @@ export default function NewMemoryPage() {
           albumId: params.albumId,
           uid: user.uid,
           imageUrl,
-          title: title.trim() || "Untitled memory",
+          title: title.trim() || "Us, that day",
           frontCaption: frontCaption.trim() || undefined,
           message: message.trim(),
           date: new Date(date),
@@ -81,9 +81,10 @@ export default function NewMemoryPage() {
         Cancel
       </Link>
 
-      <h1 className="mt-6 text-2xl font-light text-[var(--fg)]">New memory</h1>
+      <h1 className="mt-6 text-2xl font-light text-[var(--fg)]">Something for our album</h1>
       <p className="mt-2 text-sm text-[var(--fg-muted)]">
-        Polaroids hold a photo and a note; orb moments capture milestones without an image.
+        A polaroid with a photo and a note on the back, or an orb for a milestone when
+        there isn&apos;t a picture.
       </p>
 
       <div className="mt-8 flex rounded-full bg-[var(--surface)] p-1 text-xs">
@@ -247,7 +248,7 @@ export default function NewMemoryPage() {
           disabled={busy}
           className="w-full rounded-full bg-[var(--fg)] py-3 text-sm font-medium text-[var(--bg)] disabled:opacity-50"
         >
-          {busy ? "Saving…" : "Save to album"}
+          {busy ? "Saving…" : "Save for us"}
         </button>
       </form>
     </main>

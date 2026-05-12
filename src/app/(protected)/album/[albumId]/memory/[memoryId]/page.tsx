@@ -29,7 +29,7 @@ export default function MemoryDetailPage() {
   }, [memories, params.memoryId]);
 
   async function onDelete() {
-    if (!memory || !window.confirm("Delete this memory permanently?")) return;
+    if (!memory || !window.confirm("Delete this memory for both of us? This can’t be undone.")) return;
     await deleteMemory(memory.id);
     router.replace(`/album/${params.albumId}/timeline`);
   }
@@ -37,7 +37,7 @@ export default function MemoryDetailPage() {
   if (loading) {
     return (
       <main className="mx-auto max-w-4xl px-4 py-12 text-sm text-[var(--fg-muted)]">
-        Loading memory…
+        Loading a memory…
       </main>
     );
   }
@@ -53,7 +53,7 @@ export default function MemoryDetailPage() {
   if (!memory) {
     return (
       <main className="mx-auto max-w-4xl px-4 py-12 text-sm text-[var(--fg-muted)]">
-        This memory could not be found.
+        This one isn&apos;t here — maybe we archived it or the link is old.
       </main>
     );
   }
@@ -66,7 +66,7 @@ export default function MemoryDetailPage() {
           className="inline-flex items-center gap-1.5 text-xs tracking-wide text-[var(--fg-muted)] hover:text-[var(--fg)]"
         >
           <FreehandIcon name="navigation-page-right" width={14} height={14} flip="horizontal" />
-          Back to timeline
+          Back to our timeline
         </Link>
         <div className="flex items-center gap-2 text-xs text-[var(--fg-muted)]">
           {prev ? (
@@ -106,7 +106,7 @@ export default function MemoryDetailPage() {
           <PolaroidCard memory={memory} interactive className="scale-105" />
         ) : (
           <div className="max-w-md rounded-2xl border border-[color-mix(in_oklab,var(--fg)_10%,transparent)] bg-[var(--surface)] p-8 shadow-[var(--shadow-polaroid)]">
-            <p className="text-xs uppercase tracking-[0.25em] text-[var(--accent)]">Orb moment</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-[var(--accent)]">Our milestone</p>
             <h1 className="mt-4 text-3xl font-light text-[var(--fg)]">{memory.title}</h1>
             <p className="mt-4 text-sm leading-relaxed text-[var(--fg-muted)]">{memory.description}</p>
             <p className="mt-6 text-xs text-[var(--fg-muted)]">{formatMemoryStamp(memory.date)}</p>
@@ -125,7 +125,7 @@ export default function MemoryDetailPage() {
             className="inline-flex items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--fg)_14%,transparent)] px-4 py-2 text-xs text-[var(--fg-muted)] hover:text-red-700 dark:hover:text-red-300"
           >
             <FreehandIcon name="delete-bin-2" width={14} height={14} />
-            Delete memory
+            Remove from our album
           </button>
         </div>
       ) : null}

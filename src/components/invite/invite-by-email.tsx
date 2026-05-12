@@ -23,7 +23,9 @@ export function InviteByEmail({ albumId }: { albumId: string }) {
         invitedBy: user.uid,
       });
       setEmail("");
-      setStatus("Invitation recorded. When they sign in with Google using this email, they are added automatically.");
+      setStatus(
+        "Saved. When she signs in with Google using that email, she'll land in the album with you.",
+      );
     } catch (err) {
       setStatus(err instanceof Error ? err.message : "Could not send invite.");
     } finally {
@@ -38,14 +40,14 @@ export function InviteByEmail({ albumId }: { albumId: string }) {
     >
       <p className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-[var(--fg-muted)]">
         <FreehandIcon name="read-email-at-symbol" width={16} height={16} className="text-[var(--accent)]" />
-        Invite collaborator
+        Invite her
       </p>
       <p className="mt-2 text-sm text-[var(--fg-muted)]">
-        Enter their Google email. They will gain access the next time they sign in.
+        Her Google email — she&apos;ll get access the next time she signs in.
       </p>
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         <label className="sr-only" htmlFor="invite-email">
-          Collaborator email
+          Her Google email
         </label>
         <input
           id="invite-email"

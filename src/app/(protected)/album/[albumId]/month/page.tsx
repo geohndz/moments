@@ -11,9 +11,9 @@ export default function AlbumMonthPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8">
-      <h1 className="text-2xl font-light text-[var(--fg)]">Monthly archive</h1>
+      <h1 className="text-2xl font-light text-[var(--fg)]">By month</h1>
       <p className="mt-2 max-w-xl text-sm text-[var(--fg-muted)]">
-        A quiet grid of everything you saved, grouped by month.
+        Everything we&apos;ve tucked into this album, grouped month by month.
       </p>
 
       {error ? (

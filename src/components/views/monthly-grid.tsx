@@ -86,7 +86,9 @@ export function MonthlyGrid({
         );
       })}
       {keys.length === 0 ? (
-        <p className="text-sm text-[var(--fg-muted)]">No memories in this album yet.</p>
+        <p className="text-sm text-[var(--fg-muted)]">
+          Drop a memory here first — it&apos;ll show up in the grid.
+        </p>
       ) : null}
     </div>
   );

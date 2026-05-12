@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { MomentsWordmark } from "@/components/ui/moments-logo";
 import { FreehandIcon } from "@/components/ui/freehand-icon";
 
 export function AppHeader({ children }: { children?: ReactNode }) {
@@ -16,16 +17,16 @@ export function AppHeader({ children }: { children?: ReactNode }) {
       <div>
         <Link
           href="/albums"
-          className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.28em] uppercase text-[var(--fg-muted)]"
+          className="inline-flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+          aria-label="Go to our albums"
         >
-          <FreehandIcon name="home" width={16} height={16} className="text-[var(--accent)]" />
-          Moments
+          <MomentsWordmark priority />
         </Link>
         {children ? (
           <div className="mt-2">{children}</div>
         ) : (
           <p className="mt-1 text-sm text-[var(--fg-muted)]">
-            Signed in as {user?.email ?? "guest"}
+            You · {user?.email ?? "guest"}
           </p>
         )}
       </div>
@@ -36,7 +37,7 @@ export function AppHeader({ children }: { children?: ReactNode }) {
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)]"
           >
             <FreehandIcon name="office-folder" width={15} height={15} />
-            All albums
+            Our albums
           </Link>
         ) : null}
         <button

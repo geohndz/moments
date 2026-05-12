@@ -40,7 +40,7 @@ export function YearArchive({
               <h2 className="text-4xl font-extralight tracking-tight text-[var(--fg)] sm:text-5xl">
                 {label}
               </h2>
-              <span className="text-xs text-[var(--fg-muted)]">{list.length} moments</span>
+              <span className="text-xs text-[var(--fg-muted)]">{list.length} memories</span>
             </div>
             <div className="mt-10 columns-2 gap-5 sm:columns-3 lg:columns-4">
               {list.map((m, i) => {
@@ -59,7 +59,7 @@ export function YearArchive({
                         <span className="h-12 w-12 rounded-full bg-[var(--accent-soft)] blur-md" />
                         <div>
                           <p className="text-sm font-medium text-[var(--fg)]">{m.title}</p>
-                          <p className="text-[11px] text-[var(--fg-muted)]">Orb moment</p>
+                          <p className="text-[11px] text-[var(--fg-muted)]">Our orb</p>
                         </div>
                       </div>
                     </Link>
@@ -101,7 +101,7 @@ export function YearArchive({
         );
       })}
       {years.length === 0 ? (
-        <p className="text-sm text-[var(--fg-muted)]">No memories in this album yet.</p>
+        <p className="text-sm text-[var(--fg-muted)]">Nothing to show yet — add something to our album first.</p>
       ) : null}
     </div>
   );

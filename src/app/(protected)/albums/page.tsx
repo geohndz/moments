@@ -47,10 +47,10 @@ export default function AlbumsPage() {
     <div className="flex min-h-svh flex-col">
       <AppHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
-        <h1 className="text-2xl font-light text-[var(--fg)]">Your albums</h1>
+        <h1 className="text-2xl font-light text-[var(--fg)]">Our albums</h1>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--fg-muted)]">
-          Each album is a shared memory box for two — chronological timelines,
-          monthly archives, and soft polaroid flips.
+          Little chapters for the two of us — timelines, month-by-month grids, and
+          polaroids we can flip together.
         </p>
 
         <form
@@ -59,13 +59,13 @@ export default function AlbumsPage() {
         >
           <div className="flex-1">
             <label htmlFor="album-title" className="text-xs text-[var(--fg-muted)]">
-              New album title
+              Name a new chapter
             </label>
             <input
               id="album-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Our first year"
+              placeholder="Us, 2025 · our first trip · whatever fits us"
               className="mt-2 w-full rounded-xl border border-[color-mix(in_oklab,var(--fg)_12%,transparent)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--fg)] outline-none ring-[var(--accent)] placeholder:text-[var(--fg-muted)] focus:ring-2"
             />
           </div>
@@ -75,7 +75,7 @@ export default function AlbumsPage() {
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--fg)] px-6 py-3 text-sm font-medium text-[var(--bg)] disabled:opacity-40"
           >
             <FreehandIcon name="add-sign-bold" width={16} height={16} className="text-[var(--bg)]" />
-            Create
+            Start it
           </button>
         </form>
 
@@ -88,7 +88,11 @@ export default function AlbumsPage() {
               >
                 <p className="text-lg font-medium text-[var(--fg)]">{a.title}</p>
                 <p className="mt-1 text-xs text-[var(--fg-muted)]">
-                  {a.memberIds.length} collaborator{a.memberIds.length === 1 ? "" : "s"}
+                  {a.memberIds.length >= 2
+                    ? "Both of us here"
+                    : a.memberIds.length === 1
+                      ? "Waiting on her to join"
+                      : "No one yet"}
                 </p>
                 <span className="mt-3 inline-flex items-center gap-1 text-xs tracking-wide text-[var(--accent)]">
                   Open timeline
@@ -99,7 +103,7 @@ export default function AlbumsPage() {
           ))}
           {albums.length === 0 ? (
             <li className="rounded-2xl border border-dashed border-[color-mix(in_oklab,var(--fg)_18%,transparent)] px-6 py-12 text-center text-sm text-[var(--fg-muted)]">
-              No albums yet. Name one above to begin.
+              No albums yet — name one above and we&apos;ll fill it together.
             </li>
           ) : null}
         </ul>

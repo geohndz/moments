@@ -42,7 +42,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         aria-live="polite"
       >
         <span className="text-sm tracking-wide text-[var(--fg-muted)]">
-          Opening your album…
+          Opening our album…
         </span>
       </div>
     );

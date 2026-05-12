@@ -13,10 +13,10 @@ export default function AlbumTimelinePage() {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8">
       <div className="max-w-xl">
-        <h1 className="text-2xl font-light text-[var(--fg)]">Timeline</h1>
+        <h1 className="text-2xl font-light text-[var(--fg)]">Our timeline</h1>
         <p className="mt-2 text-sm leading-relaxed text-[var(--fg-muted)]">
-          Scroll gently through your shared polaroids and orb milestones. Tap a card to
-          flip it; follow open detail for a focused view.
+          Scroll through our polaroids and the little orb milestones. Tap a card to
+          flip it, or open a memory to linger on it.
         </p>
       </div>
 
@@ -27,7 +27,7 @@ export default function AlbumTimelinePage() {
       ) : null}
 
       {loading ? (
-        <p className="mt-10 text-sm text-[var(--fg-muted)]">Syncing memories…</p>
+        <p className="mt-10 text-sm text-[var(--fg-muted)]">Syncing our memories…</p>
       ) : (
         <TimelineStrip className="mt-8" memories={memories} albumId={albumId} />
       )}

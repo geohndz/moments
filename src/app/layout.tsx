@@ -16,9 +16,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Moments — Shared memory album",
+  title: "Moments — our memory album",
   description:
-    "Moments is a quiet digital space for preserving relationships through polaroid memories and gentle timelines.",
+    "A quiet little app for us to keep polaroids, notes, and milestones together—just for the two of us.",
 };
 
 export default function RootLayout({
