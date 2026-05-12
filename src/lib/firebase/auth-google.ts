@@ -11,16 +11,21 @@ import { getFirebaseAuth, getFirebaseDb } from "@/lib/firebase/client";
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: "select_account" });
 
+/** Firestore user doc + invite acceptance — shared after any sign-in. */
+export async function finalizeUserAfterSignIn(user: User): Promise<void> {
+  await ensureUserDocument(user);
+  if (user.email) {
+    await acceptPendingInvitesForUser({
+      uid: user.uid,
+      email: user.email,
+    });
+  }
+}
+
 export async function signInWithGoogle(): Promise<User> {
   const auth = getFirebaseAuth();
   const cred = await signInWithPopup(auth, googleProvider);
-  await ensureUserDocument(cred.user);
-  if (cred.user.email) {
-    await acceptPendingInvitesForUser({
-      uid: cred.user.uid,
-      email: cred.user.email,
-    });
-  }
+  await finalizeUserAfterSignIn(cred.user);
   return cred.user;
 }
 
