@@ -6,7 +6,7 @@ export default function HomePage() {
     <div className="relative flex min-h-svh flex-col">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
         <p className="text-sm font-medium tracking-[0.2em] uppercase text-[var(--fg-muted)]">
-          Afterglow
+          Moments
         </p>
         <Link
           href="/login"

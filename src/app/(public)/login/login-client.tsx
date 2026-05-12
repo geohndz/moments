@@ -50,7 +50,7 @@ export function LoginClient() {
     <div className="flex min-h-svh flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm rounded-2xl border border-[color-mix(in_oklab,var(--fg)_8%,transparent)] bg-[var(--surface)] p-8 shadow-[var(--shadow-polaroid)]">
         <p className="text-center text-xs tracking-[0.3em] uppercase text-[var(--fg-muted)]">
-          Afterglow
+          Moments
         </p>
         <h1 className="mt-3 text-center text-2xl font-light text-[var(--fg)]">
           Welcome back

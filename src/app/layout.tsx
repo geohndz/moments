@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -9,10 +9,16 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Afterglow — Shared memory album",
+  title: "Moments — Shared memory album",
   description:
-    "A quiet digital space for preserving relationships through polaroid memories and gentle timelines.",
+    "Moments is a quiet digital space for preserving relationships through polaroid memories and gentle timelines.",
 };
 
 export default function RootLayout({
@@ -21,7 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
+    >
       <body className="min-h-full font-sans">
         <Providers>{children}</Providers>
       </body>

@@ -19,7 +19,7 @@ export function AppHeader({ children }: { children?: ReactNode }) {
           className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.28em] uppercase text-[var(--fg-muted)]"
         >
           <FreehandIcon name="home" width={16} height={16} className="text-[var(--accent)]" />
-          Afterglow
+          Moments
         </Link>
         {children ? (
           <div className="mt-2">{children}</div>

@@ -17,6 +17,7 @@
   --color-background: var(--bg);
   --color-foreground: var(--fg);
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,6 +38,15 @@ body {
   background: radial-gradient(1200px 700px at 20% -10%, var(--accent-soft), transparent),
     var(--bg);
   color: var(--fg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
 }
 
 ::selection {
