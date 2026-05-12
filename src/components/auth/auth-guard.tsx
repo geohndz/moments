@@ -20,15 +20,21 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-svh flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-md text-pretty text-sm text-[var(--fg-muted)]">
-          Firebase environment variables are missing. Copy{" "}
-          <code className="rounded bg-[var(--surface-2)] px-1.5 py-0.5 text-xs">
-            .env.example
-          </code>{" "}
-          to{" "}
+          Configure Firebase in{" "}
           <code className="rounded bg-[var(--surface-2)] px-1.5 py-0.5 text-xs">
             .env.local
           </code>{" "}
-          and add your project keys.
+          first. Use the{" "}
+          <strong className="text-[var(--fg)]">Web app</strong>{" "}
+          <code className="rounded bg-[var(--surface-2)] px-1.5 py-0.5 text-xs">
+            firebaseConfig
+          </code>{" "}
+          from Firebase Console (Project settings → Your apps → Web), not the Admin SDK
+          service account. Then restart{" "}
+          <code className="rounded bg-[var(--surface-2)] px-1.5 py-0.5 text-xs">
+            npm run dev
+          </code>
+          .
         </p>
       </div>
     );

@@ -204,13 +204,14 @@ export function LoginClient() {
           </form>
         ) : !configured ? (
           <p className="mt-6 text-center text-sm text-[var(--fg-muted)]">
-            Firebase keys aren&apos;t loading. Add every{" "}
-            <code className="rounded bg-[var(--surface-2)] px-1">NEXT_PUBLIC_FIREBASE_*</code>{" "}
-            value from <code className="rounded bg-[var(--surface-2)] px-1">.env.example</code>{" "}
-            into <code className="rounded bg-[var(--surface-2)] px-1">.env.local</code> at the
-            project root, then <strong className="text-[var(--fg)]">restart</strong>{" "}
-            <code className="rounded bg-[var(--surface-2)] px-1">npm run dev</code> (Next only
-            reads env when the server starts).
+            Firebase Web SDK keys aren&apos;t set. In Firebase Console open{" "}
+            <strong className="text-[var(--fg)]">Project settings → Your apps → Web</strong>,
+            copy the <code className="rounded bg-[var(--surface-2)] px-1">firebaseConfig</code>{" "}
+            values into <code className="rounded bg-[var(--surface-2)] px-1">.env.local</code> as
+            <code className="rounded bg-[var(--surface-2)] px-1">NEXT_PUBLIC_FIREBASE_*</code> (
+            see <code className="rounded bg-[var(--surface-2)] px-1">.env.example</code>). This is
+            different from the Admin SDK or the Google OAuth “Web client ID” alone. Restart{" "}
+            <code className="rounded bg-[var(--surface-2)] px-1">npm run dev</code> after saving.
           </p>
         ) : (
           <>

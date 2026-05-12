@@ -5,6 +5,9 @@ import { Providers } from "./providers";
 import { cn } from "@/lib/cn";
 import { buildFirebasePublicConfigFromEnv } from "@/lib/firebase/public-config";
 
+/** Read `process.env` for the layout on each request (avoids empty baked-in config in some deploys). */
+export const dynamic = "force-dynamic";
+
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
