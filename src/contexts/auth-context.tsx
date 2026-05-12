@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from "react";
 import { onAuthStateChanged, type User } from "firebase/auth";
-import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase/client";
+import { getFirebaseAuth } from "@/lib/firebase/client";
+import { useFirebasePublicConfig } from "@/contexts/firebase-public-config-context";
 
 type AuthState = {
   user: User | null;
@@ -40,7 +41,8 @@ function useFirebaseAuthSubscription(enabled: boolean) {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const configured = isFirebaseConfigured();
+  const firebasePublicConfig = useFirebasePublicConfig();
+  const configured = Boolean(firebasePublicConfig.apiKey);
   const { user: firebaseUser, ready } = useFirebaseAuthSubscription(configured);
 
   const value = useMemo(

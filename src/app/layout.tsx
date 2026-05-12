@@ -4,7 +4,6 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { cn } from "@/lib/cn";
 import { buildFirebasePublicConfigFromEnv } from "@/lib/firebase/public-config";
-import { FirebasePublicConfigProvider } from "@/components/firebase-public-config-provider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -42,9 +41,9 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-dvh font-sans">
-        <FirebasePublicConfigProvider value={firebasePublicConfig}>
-          <Providers>{children}</Providers>
-        </FirebasePublicConfigProvider>
+        <Providers firebasePublicConfig={firebasePublicConfig}>
+          {children}
+        </Providers>
       </body>
     </html>
   );

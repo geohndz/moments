@@ -21,8 +21,11 @@ export function buildFirebasePublicConfigFromEnv(): MomentsFirebasePublicConfig 
 }
 
 export function getFirebasePublicConfig(): MomentsFirebasePublicConfig {
-  if (typeof window !== "undefined" && window.__MOMENTS_FIREBASE__) {
-    return window.__MOMENTS_FIREBASE__;
+  if (typeof window !== "undefined") {
+    const fromWindow = window.__MOMENTS_FIREBASE__;
+    if (fromWindow?.apiKey) {
+      return fromWindow;
+    }
   }
   return buildFirebasePublicConfigFromEnv();
 }
