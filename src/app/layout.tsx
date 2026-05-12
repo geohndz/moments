@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { cn } from "@/lib/cn";
-import { FirebaseConfigScript } from "@/components/firebase-config-script";
+import { buildFirebasePublicConfigFromEnv } from "@/lib/firebase/public-config";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -29,6 +30,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const firebasePublicJson = JSON.stringify(
+    buildFirebasePublicConfigFromEnv(),
+  ).replace(/</g, "\\u003c");
+
   return (
     <html
       lang="en"
@@ -39,7 +44,13 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-dvh font-sans">
-        <FirebaseConfigScript />
+        <Script
+          id="moments-firebase-public"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.__MOMENTS_FIREBASE__=${firebasePublicJson};`,
+          }}
+        />
         <Providers>{children}</Providers>
       </body>
     </html>
