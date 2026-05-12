@@ -1,0 +1,30 @@
+import type { Metadata } from "next";
+import { Manrope } from "next/font/google";
+import "./globals.css";
+import { Providers } from "./providers";
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Afterglow — Shared memory album",
+  description:
+    "A quiet digital space for preserving relationships through polaroid memories and gentle timelines.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className={`${manrope.variable} h-full antialiased`}>
+      <body className="min-h-full font-sans">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}
