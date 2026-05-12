@@ -229,7 +229,7 @@ export default function NewMemoryPage() {
                 id="memory-mood"
                 value={mood}
                 onChange={(e) => setMood(e.target.value)}
-                placeholder="#c17f59 or “quiet joy”"
+                placeholder="#b84040 or “quiet joy”"
                 className="mt-2 w-full rounded-xl border border-[color-mix(in_oklab,var(--fg)_12%,transparent)] bg-[var(--bg)] px-4 py-3 text-sm outline-none ring-[var(--accent)] focus:ring-2"
               />
             </div>

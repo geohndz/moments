@@ -102,7 +102,7 @@ export function PolaroidCard({
         </div>
 
         <div
-          className="absolute inset-0 rounded-[var(--radius-card)] bg-[#f0ebe3] p-4 shadow-[var(--shadow-polaroid)] dark:bg-[#2c2823]"
+          className="absolute inset-0 rounded-[var(--radius-card)] bg-[#f6e8e8] p-4 shadow-[var(--shadow-polaroid)] dark:bg-[#2a2224]"
           style={{
             transform: "rotateY(180deg)",
             backfaceVisibility: "hidden",
