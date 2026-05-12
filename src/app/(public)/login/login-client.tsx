@@ -53,7 +53,7 @@ export function LoginClient() {
         <div className="flex justify-center">
           <MomentsWordmark />
         </div>
-        <h1 className="mt-3 text-center text-2xl font-light text-[var(--fg)]">
+        <h1 className="mt-3 text-center text-2xl">
           Hey — it&apos;s us
         </h1>
         <p className="mt-2 text-center text-sm text-[var(--fg-muted)]">

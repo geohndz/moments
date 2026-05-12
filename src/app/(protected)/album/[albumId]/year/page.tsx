@@ -11,7 +11,7 @@ export default function AlbumYearPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8">
-      <h1 className="text-2xl font-light text-[var(--fg)]">By year</h1>
+      <h1 className="text-2xl">By year</h1>
       <p className="mt-2 max-w-xl text-sm text-[var(--fg-muted)]">
         Each year in messy, overlapping stacks — like prints spread on the bed.
       </p>

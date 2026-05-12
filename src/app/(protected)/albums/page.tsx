@@ -47,7 +47,7 @@ export default function AlbumsPage() {
     <div className="flex min-h-svh flex-col">
       <AppHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
-        <h1 className="text-2xl font-light text-[var(--fg)]">Our albums</h1>
+        <h1 className="text-2xl">Our albums</h1>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--fg-muted)]">
           Little chapters for the two of us — timelines, month-by-month grids, and
           polaroids we can flip together.

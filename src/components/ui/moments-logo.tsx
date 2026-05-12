@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
 
 const H = 24;
@@ -12,25 +11,11 @@ type MomentsWordmarkProps = {
   priority?: boolean;
 };
 
-/**
- * Full “moments” wordmark: red on light backgrounds, white+red on dark (system preference).
- */
+/** Full “moments” wordmark for dark UI (white + red). */
 export function MomentsWordmark({ className, priority }: MomentsWordmarkProps) {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => setDark(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  const src = dark ? "/brand/moments-wordmark-dark.svg" : "/brand/moments-wordmark-light.svg";
-
   return (
     <Image
-      src={src}
+      src="/brand/moments-wordmark-dark.svg"
       alt="Moments"
       width={Math.round(H * RATIO)}
       height={H}

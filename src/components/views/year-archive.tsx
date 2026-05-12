@@ -37,7 +37,7 @@ export function YearArchive({
         return (
           <section key={year} className="relative" aria-label={label}>
             <div className="flex items-baseline gap-4">
-              <h2 className="text-4xl font-extralight text-[var(--fg)] sm:text-5xl">
+              <h2 className="text-4xl sm:text-5xl">
                 {label}
               </h2>
               <span className="text-xs text-[var(--fg-muted)]">{list.length} memories</span>

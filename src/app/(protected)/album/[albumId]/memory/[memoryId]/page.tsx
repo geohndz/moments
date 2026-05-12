@@ -107,7 +107,7 @@ export default function MemoryDetailPage() {
         ) : (
           <div className="max-w-md rounded-2xl border border-[color-mix(in_oklab,var(--fg)_10%,transparent)] bg-[var(--surface)] p-8 shadow-[var(--shadow-polaroid)]">
             <p className="text-xs uppercase tracking-[0.25em] text-[var(--accent)]">Our milestone</p>
-            <h1 className="mt-4 text-3xl font-light text-[var(--fg)]">{memory.title}</h1>
+            <h1 className="mt-4 text-3xl">{memory.title}</h1>
             <p className="mt-4 text-sm leading-relaxed text-[var(--fg-muted)]">{memory.description}</p>
             <p className="mt-6 text-xs text-[var(--fg-muted)]">{formatMemoryStamp(memory.date)}</p>
             {memory.mood ? (

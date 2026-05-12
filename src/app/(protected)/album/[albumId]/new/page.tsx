@@ -81,7 +81,7 @@ export default function NewMemoryPage() {
         Cancel
       </Link>
 
-      <h1 className="mt-6 text-2xl font-light text-[var(--fg)]">Something for our album</h1>
+      <h1 className="mt-6 text-2xl">Something for our album</h1>
       <p className="mt-2 text-sm text-[var(--fg-muted)]">
         A polaroid with a photo and a note on the back, or an orb for a milestone when
         there isn&apos;t a picture.

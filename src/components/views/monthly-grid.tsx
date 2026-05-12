@@ -36,7 +36,7 @@ export function MonthlyGrid({
         const label = formatMonthYear(toDate(list[0]!.date));
         return (
           <section key={key} aria-label={label}>
-            <h2 className="text-xs font-medium tracking-[0.28em] uppercase text-[var(--fg-muted)]">
+            <h2 className="text-xs tracking-[0.28em] uppercase text-[var(--fg-muted)]">
               {label}
             </h2>
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">

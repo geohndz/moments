@@ -13,7 +13,7 @@ export default function AlbumTimelinePage() {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8">
       <div className="max-w-xl">
-        <h1 className="text-2xl font-light text-[var(--fg)]">Our timeline</h1>
+        <h1 className="text-2xl">Our timeline</h1>
         <p className="mt-2 text-sm leading-relaxed text-[var(--fg-muted)]">
           Scroll through our polaroids and the little orb milestones. Tap a card to
           flip it, or open a memory to linger on it.
