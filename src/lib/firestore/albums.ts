@@ -7,6 +7,7 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   where,
   writeBatch,
   arrayUnion,
@@ -15,6 +16,7 @@ import {
 import { getFirebaseDb } from "@/lib/firebase/client";
 import { toDate } from "@/lib/dates";
 import type { Album } from "@/lib/types";
+import { albumInviteDocId } from "@/lib/firestore/invite-id";
 import { albumFromDoc } from "@/lib/firestore/serializers";
 
 const albumsCol = () => collection(getFirebaseDb(), "albums");
@@ -59,9 +61,11 @@ export async function inviteEmailToAlbum(input: {
   email: string;
   invitedBy: string;
 }): Promise<void> {
-  await addDoc(invitesCol(), {
+  const normalized = input.email.trim().toLowerCase();
+  const id = albumInviteDocId(input.albumId, normalized);
+  await setDoc(doc(invitesCol(), id), {
     albumId: input.albumId,
-    email: input.email.trim().toLowerCase(),
+    email: normalized,
     createdBy: input.invitedBy,
     createdAt: serverTimestamp(),
   });

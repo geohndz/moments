@@ -13,6 +13,19 @@ service cloud.firestore {
       return signedIn() && request.auth.uid in albumData(albumId).memberIds;
     }
 
+    /** Invite accept: batch adds this uid to memberIds before they are a member. */
+    function isJoiningAlbumAsSelf(albumId) {
+      return signedIn()
+        && request.resource.data.keys().hasAll(["title", "memberIds", "createdBy", "createdAt"])
+        && request.resource.data.title == resource.data.title
+        && request.resource.data.createdBy == resource.data.createdBy
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.auth.uid in request.resource.data.memberIds
+        && !(request.auth.uid in resource.data.memberIds)
+        && request.resource.data.memberIds.hasAll(resource.data.memberIds)
+        && request.resource.data.memberIds.size() == resource.data.memberIds.size() + 1;
+    }
+
     match /users/{userId} {
       allow read, write: if signedIn() && request.auth.uid == userId;
     }
@@ -20,10 +33,15 @@ service cloud.firestore {
     match /albums/{albumId} {
       allow read: if isAlbumMember(albumId);
       allow create: if signedIn()
-        && request.resource.data.keys().hasAll(["title", "memberIds", "createdBy", "createdAt"])
+        && request.resource.data.keys().hasAll(["title", "memberIds", "createdBy"])
+        && request.resource.data.title is string
+        && request.resource.data.memberIds is list
         && request.auth.uid in request.resource.data.memberIds
         && request.resource.data.createdBy == request.auth.uid;
-      allow update: if isAlbumMember(albumId);
+      allow update: if signedIn() && (
+        isAlbumMember(albumId) ||
+        isJoiningAlbumAsSelf(albumId)
+      );
       allow delete: if signedIn() && request.auth.uid == resource.data.createdBy;
     }
 
@@ -31,7 +49,7 @@ service cloud.firestore {
       allow read: if signedIn() && isAlbumMember(resource.data.albumId);
 
       allow create: if signedIn()
-        && request.resource.data.keys().hasAll(["albumId", "type", "title", "date", "createdBy", "createdAt"])
+        && request.resource.data.keys().hasAll(["albumId", "type", "title", "date", "createdBy"])
         && request.resource.data.albumId is string
         && (request.resource.data.type == "polaroid" || request.resource.data.type == "orb")
         && isAlbumMember(request.resource.data.albumId)
@@ -47,7 +65,9 @@ service cloud.firestore {
       );
 
       allow create: if signedIn()
-        && request.resource.data.keys().hasAll(["albumId", "email", "createdBy", "createdAt"])
+        && request.resource.data.keys().hasAll(["albumId", "email", "createdBy"])
+        && request.resource.data.albumId is string
+        && request.resource.data.email is string
         && isAlbumMember(request.resource.data.albumId)
         && request.resource.data.createdBy == request.auth.uid;
 
