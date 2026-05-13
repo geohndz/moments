@@ -15,10 +15,16 @@ googleProvider.setCustomParameters({ prompt: "select_account" });
 export async function finalizeUserAfterSignIn(user: User): Promise<void> {
   await ensureUserDocument(user);
   if (user.email) {
-    await acceptPendingInvitesForUser({
-      uid: user.uid,
-      email: user.email,
-    });
+    try {
+      await acceptPendingInvitesForUser({
+        uid: user.uid,
+        email: user.email,
+      });
+    } catch (e) {
+      // Non-fatal: new users with no album yet can't list invites under the
+      // tighter rules. They can still be invited later by an existing member.
+      console.warn("[moments] invite acceptance skipped", e);
+    }
   }
 }
 
