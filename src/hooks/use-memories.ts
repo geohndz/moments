@@ -22,7 +22,17 @@ export function useMemories(albumId: string | undefined) {
         setSnap({ id: albumId, memories: list, error: null });
       },
       (e) => {
-        setSnap({ id: albumId, memories: [], error: e.message });
+        const code =
+          e && typeof e === "object" && "code" in e
+            ? String((e as { code: unknown }).code)
+            : "unknown";
+        console.error("[moments] subscribeMemoriesForAlbum failed", {
+          code,
+          message: e.message,
+          albumId,
+          error: e,
+        });
+        setSnap({ id: albumId, memories: [], error: `${e.message} (code: ${code})` });
       },
     );
     return () => unsub();

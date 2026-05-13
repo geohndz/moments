@@ -41,12 +41,21 @@ export function SharedAlbumProvider({ children }: { children: ReactNode }) {
         if (!cancelled) setState({ albumId: id, loading: false, error: null });
       },
       (e) => {
+        const code =
+          e && typeof e === "object" && "code" in e
+            ? String((e as { code: unknown }).code)
+            : "unknown";
+        console.error("[moments] ensureDefaultSharedAlbum failed", {
+          code,
+          message: e instanceof Error ? e.message : String(e),
+          error: e,
+        });
         if (!cancelled) {
           setState({
             albumId: null,
             loading: false,
             error:
-              e instanceof Error ? e.message : "Could not open our shared space.",
+              e instanceof Error ? `${e.message} (code: ${code})` : "Could not open our shared space.",
           });
         }
       },
