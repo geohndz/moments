@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import { useSharedAlbum } from "@/contexts/shared-album-context";
 import { createOrbMemory, createPolaroidMemory } from "@/lib/firestore/memories";
 import { uploadAlbumImage } from "@/lib/firebase/storage-upload";
 import { FreehandIcon } from "@/components/ui/freehand-icon";
@@ -11,8 +12,8 @@ import { FreehandIcon } from "@/components/ui/freehand-icon";
 type Mode = "polaroid" | "orb";
 
 export default function NewMemoryPage() {
-  const params = useParams<{ albumId: string }>();
   const router = useRouter();
+  const { albumId } = useSharedAlbum();
   const { user } = useAuth();
   const [mode, setMode] = useState<Mode>("polaroid");
   const [busy, setBusy] = useState(false);
@@ -30,13 +31,13 @@ export default function NewMemoryPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user) return;
+    if (!user || !albumId) return;
     setBusy(true);
     setError(null);
     try {
       if (mode === "orb") {
         await createOrbMemory({
-          albumId: params.albumId,
+          albumId,
           uid: user.uid,
           title: title.trim() || "Orb moment",
           description: description.trim(),
@@ -46,10 +47,10 @@ export default function NewMemoryPage() {
       } else {
         let imageUrl: string | null = null;
         if (file) {
-          imageUrl = await uploadAlbumImage({ albumId: params.albumId, file });
+          imageUrl = await uploadAlbumImage({ albumId, file });
         }
         await createPolaroidMemory({
-          albumId: params.albumId,
+          albumId,
           uid: user.uid,
           imageUrl,
           title: title.trim() || "Us, that day",
@@ -63,7 +64,7 @@ export default function NewMemoryPage() {
             .filter(Boolean),
         });
       }
-      router.replace(`/album/${params.albumId}/timeline`);
+      router.replace("/memories");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save memory.");
     } finally {
@@ -74,17 +75,17 @@ export default function NewMemoryPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 py-10 sm:px-6">
       <Link
-        href={`/album/${params.albumId}/timeline`}
+        href="/memories"
         className="inline-flex items-center gap-1.5 text-xs tracking-wide text-[var(--fg-muted)] hover:text-[var(--fg)]"
       >
         <FreehandIcon name="navigation-page-right" width={14} height={14} flip="horizontal" />
         Cancel
       </Link>
 
-      <h1 className="mt-6 text-2xl">Something for our album</h1>
+      <h1 className="mt-6 text-2xl">Add to our grid</h1>
       <p className="mt-2 text-sm text-[var(--fg-muted)]">
-        A polaroid with a photo and a note on the back, or an orb for a milestone when
-        there isn&apos;t a picture.
+        A polaroid with a photo and a note on the back, or an orb for a milestone when there
+        isn&apos;t a picture.
       </p>
 
       <div className="mt-8 flex rounded-full bg-[var(--surface)] p-1 text-xs">

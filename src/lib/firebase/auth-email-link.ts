@@ -84,7 +84,7 @@ export async function tryCompleteEmailLinkSignIn(
   }
 
   const params = new URLSearchParams(window.location.search);
-  const next = params.get("next") ?? "/albums";
+  const next = params.get("next") ?? "/memories";
   const clean = `/login?next=${encodeURIComponent(next)}`;
   window.history.replaceState({}, "", clean);
 

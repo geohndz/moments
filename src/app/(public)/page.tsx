@@ -25,14 +25,14 @@ export default function HomePage() {
         </p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Link
-            href="/login"
+            href="/login?next=%2Fmemories"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--fg)] px-6 py-3 text-sm font-medium text-[var(--bg)] transition-opacity hover:opacity-90"
           >
             <FreehandIcon name="photo-frame-landscape" width={18} height={18} className="text-[var(--bg)]" />
             Open our album
           </Link>
           <Link
-            href="/login"
+            href="/login?next=%2Fmemories"
             className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm text-[var(--fg-muted)] underline-offset-4 hover:text-[var(--fg)] hover:underline"
           >
             <FreehandIcon name="app-window-user" width={18} height={18} />

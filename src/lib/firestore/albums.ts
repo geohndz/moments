@@ -13,6 +13,7 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase/client";
+import { toDate } from "@/lib/dates";
 import type { Album } from "@/lib/types";
 import { albumFromDoc } from "@/lib/firestore/serializers";
 
@@ -36,6 +37,21 @@ export async function listAlbumsForUser(uid: string): Promise<Album[]> {
   const q = query(albumsCol(), where("memberIds", "array-contains", uid));
   const snap = await getDocs(q);
   return snap.docs.map((d) => albumFromDoc(d.id, d.data() as DocumentData));
+}
+
+/** One implicit shared space per account: oldest album or a new default for the couple. */
+export async function ensureDefaultSharedAlbum(uid: string): Promise<string> {
+  const list = await listAlbumsForUser(uid);
+  if (list.length > 0) {
+    const sorted = [...list].sort(
+      (a, b) => toDate(a.createdAt).getTime() - toDate(b.createdAt).getTime(),
+    );
+    return sorted[0]!.id;
+  }
+  return createAlbum({
+    title: "Our moments",
+    ownerUid: uid,
+  });
 }
 
 export async function inviteEmailToAlbum(input: {

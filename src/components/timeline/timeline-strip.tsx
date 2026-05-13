@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { Memory } from "@/lib/types";
 import { PolaroidCard } from "@/components/memory/polaroid-card";
 import { OrbMarker } from "@/components/memory/orb-marker";
@@ -7,11 +8,11 @@ import { cn } from "@/lib/cn";
 
 type TimelineStripProps = {
   memories: Memory[];
-  albumId: string;
+  memoryHref: (memoryId: string) => string;
   className?: string;
 };
 
-export function TimelineStrip({ memories, albumId, className }: TimelineStripProps) {
+export function TimelineStrip({ memories, memoryHref, className }: TimelineStripProps) {
   return (
     <div className={cn("relative", className)}>
       <div
@@ -30,11 +31,13 @@ export function TimelineStrip({ memories, albumId, className }: TimelineStripPro
             style={{ transform: `translateY(${i % 2 === 0 ? 0 : 12}px)` }}
           >
             {m.type === "orb" ? (
-              <OrbMarker memory={m} />
+              <Link href={memoryHref(m.id)} className="block">
+                <OrbMarker memory={m} />
+              </Link>
             ) : (
               <PolaroidCard
                 memory={m}
-                detailHref={`/album/${albumId}/memory/${m.id}`}
+                detailHref={memoryHref(m.id)}
               />
             )}
           </div>

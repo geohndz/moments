@@ -8,13 +8,15 @@ import { useMemories } from "@/hooks/use-memories";
 import { deleteMemory } from "@/lib/firestore/memories";
 import { formatMemoryStamp } from "@/lib/dates";
 import { useAuth } from "@/contexts/auth-context";
+import { useSharedAlbum } from "@/contexts/shared-album-context";
 import { FreehandIcon } from "@/components/ui/freehand-icon";
 
 export default function MemoryDetailPage() {
-  const params = useParams<{ albumId: string; memoryId: string }>();
+  const params = useParams<{ memoryId: string }>();
   const router = useRouter();
+  const { albumId } = useSharedAlbum();
   const { user } = useAuth();
-  const { memories, loading, error } = useMemories(params.albumId);
+  const { memories, loading, error } = useMemories(albumId ?? undefined);
 
   const { memory, prev, next } = useMemo(() => {
     const idx = memories.findIndex((m) => m.id === params.memoryId);
@@ -29,9 +31,10 @@ export default function MemoryDetailPage() {
   }, [memories, params.memoryId]);
 
   async function onDelete() {
-    if (!memory || !window.confirm("Delete this memory for both of us? This can’t be undone.")) return;
+    if (!memory || !window.confirm("Delete this memory for both of us? This can’t be undone."))
+      return;
     await deleteMemory(memory.id);
-    router.replace(`/album/${params.albumId}/timeline`);
+    router.replace("/memories");
   }
 
   if (loading) {
@@ -62,17 +65,17 @@ export default function MemoryDetailPage() {
     <main className="mx-auto flex max-w-5xl flex-col gap-10 px-4 py-10 sm:px-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Link
-          href={`/album/${params.albumId}/timeline`}
+          href="/memories"
           className="inline-flex items-center gap-1.5 text-xs tracking-wide text-[var(--fg-muted)] hover:text-[var(--fg)]"
         >
           <FreehandIcon name="navigation-page-right" width={14} height={14} flip="horizontal" />
-          Back to our timeline
+          Back to grid
         </Link>
         <div className="flex items-center gap-2 text-xs text-[var(--fg-muted)]">
           {prev ? (
             <Link
               className="inline-flex items-center gap-1 hover:text-[var(--fg)]"
-              href={`/album/${params.albumId}/memory/${prev.id}`}
+              href={`/memories/${prev.id}`}
             >
               <FreehandIcon name="navigation-page-right" width={14} height={14} flip="horizontal" />
               Previous
@@ -87,7 +90,7 @@ export default function MemoryDetailPage() {
           {next ? (
             <Link
               className="inline-flex items-center gap-1 hover:text-[var(--fg)]"
-              href={`/album/${params.albumId}/memory/${next.id}`}
+              href={`/memories/${next.id}`}
             >
               Next
               <FreehandIcon name="navigation-page-right" width={14} height={14} />
@@ -125,7 +128,7 @@ export default function MemoryDetailPage() {
             className="inline-flex items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--fg)_14%,transparent)] px-4 py-2 text-xs text-[var(--fg-muted)] hover:text-red-700 dark:hover:text-red-300"
           >
             <FreehandIcon name="delete-bin-2" width={14} height={14} />
-            Remove from our album
+            Remove this memory
           </button>
         </div>
       ) : null}

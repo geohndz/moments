@@ -33,7 +33,7 @@ export function LoginClient() {
   const { configured, user, loading } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") ?? "/albums";
+  const next = params.get("next") ?? "/memories";
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [linkSent, setLinkSent] = useState(false);

@@ -12,11 +12,11 @@ function yearOf(m: Memory) {
 
 export function YearArchive({
   memories,
-  albumId,
+  memoryHref,
   className,
 }: {
   memories: Memory[];
-  albumId: string;
+  memoryHref: (memoryId: string) => string;
   className?: string;
 }) {
   const byYear = new Map<number, Memory[]>();
@@ -49,7 +49,7 @@ export function YearArchive({
                   return (
                     <Link
                       key={m.id}
-                      href={`/album/${albumId}/memory/${m.id}`}
+                      href={memoryHref(m.id)}
                       className={cn(
                         "mb-5 break-inside-avoid rounded-2xl border border-[color-mix(in_oklab,var(--fg)_8%,transparent)] bg-[var(--surface)] p-6 transition-transform hover:-translate-y-1 hover:shadow-[var(--shadow-polaroid)]",
                         lift,
@@ -68,7 +68,7 @@ export function YearArchive({
                 return (
                   <Link
                     key={m.id}
-                    href={`/album/${albumId}/memory/${m.id}`}
+                    href={memoryHref(m.id)}
                     className={cn(
                       "mb-5 break-inside-avoid block overflow-hidden rounded-xl bg-[var(--surface)] p-2 shadow-[var(--shadow-polaroid)] transition-transform hover:-translate-y-1",
                       lift,
@@ -101,7 +101,7 @@ export function YearArchive({
         );
       })}
       {years.length === 0 ? (
-        <p className="text-sm text-[var(--fg-muted)]">Nothing to show yet — add something to our album first.</p>
+        <p className="text-sm text-[var(--fg-muted)]">Nothing to show yet — add a polaroid or an orb first.</p>
       ) : null}
     </div>
   );

@@ -1,27 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { FreehandIcon } from "@/components/ui/freehand-icon";
 
-export function AlbumTabs() {
-  const params = useParams<{ albumId: string }>();
+export function MemoriesNav() {
   const pathname = usePathname();
-  const albumId = params.albumId;
 
   const items = [
-    { href: `/album/${albumId}/timeline`, label: "Timeline", icon: "time-clock-circle" as const },
-    { href: `/album/${albumId}/month`, label: "Month", icon: "calendar-grid" as const },
-    { href: `/album/${albumId}/year`, label: "Year", icon: "layouts-array-1" as const },
+    { href: "/memories", label: "Grid", icon: "calendar-grid" as const },
+    { href: "/memories/timeline", label: "Timeline", icon: "time-clock-circle" as const },
+    { href: "/memories/year", label: "Year", icon: "layouts-array-1" as const },
   ] as const;
 
+  const memMatch = /^\/memories\/([^/]+)$/.exec(pathname);
+  const memSlug = memMatch?.[1];
+  const isMemoryDetail =
+    Boolean(memSlug) && !["new", "timeline", "year"].includes(memSlug!);
+
   return (
-    <nav aria-label="Album views" className="flex flex-wrap gap-2">
+    <nav aria-label="Memory views" className="flex flex-wrap gap-2">
       {items.map((item) => {
-        const isTimelineTab = item.href.endsWith("/timeline");
-        const active = isTimelineTab
-          ? pathname.includes("/timeline") || pathname.includes("/memory/")
+        const isGrid = item.href === "/memories";
+        const active = isGrid
+          ? pathname === "/memories" || isMemoryDetail
           : pathname === item.href;
         return (
           <Link
@@ -45,11 +48,11 @@ export function AlbumTabs() {
         );
       })}
       <Link
-        href={`/album/${albumId}/new`}
+        href="/memories/new"
         className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-[color-mix(in_oklab,var(--fg)_20%,transparent)] px-3 py-1.5 text-xs text-[var(--fg-muted)] hover:border-[var(--accent)] hover:text-[var(--fg)]"
       >
         <FreehandIcon name="notes-add" width={14} height={14} />
-        New memory
+        Add polaroid or orb
       </Link>
     </nav>
   );

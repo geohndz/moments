@@ -12,11 +12,11 @@ function monthKey(d: Date) {
 
 export function MonthlyGrid({
   memories,
-  albumId,
+  memoryHref,
   className,
 }: {
   memories: Memory[];
-  albumId: string;
+  memoryHref: (memoryId: string) => string;
   className?: string;
 }) {
   const groups = new Map<string, Memory[]>();
@@ -45,7 +45,7 @@ export function MonthlyGrid({
                   return (
                     <Link
                       key={m.id}
-                      href={`/album/${albumId}/memory/${m.id}`}
+                      href={memoryHref(m.id)}
                       className="group flex aspect-[3/4] flex-col items-center justify-center rounded-xl border border-[color-mix(in_oklab,var(--fg)_10%,transparent)] bg-[var(--surface)] p-4 text-center transition-transform hover:-translate-y-0.5 hover:shadow-[var(--shadow-polaroid)]"
                     >
                       <span className="h-10 w-10 rounded-full bg-[var(--accent-soft)] blur-sm" />
@@ -56,7 +56,7 @@ export function MonthlyGrid({
                 return (
                   <Link
                     key={m.id}
-                    href={`/album/${albumId}/memory/${m.id}`}
+                    href={memoryHref(m.id)}
                     className="group block overflow-hidden rounded-xl bg-[var(--surface)] p-2 shadow-[var(--shadow-polaroid)] transition-transform hover:-translate-y-0.5"
                   >
                     <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--surface-2)]">
