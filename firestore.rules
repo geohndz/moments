@@ -5,25 +5,35 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function albumData(albumId) {
-      return get(/databases/$(database)/documents/albums/$(albumId)).data;
+    function albumMemberIds(albumId) {
+      return get(/databases/$(database)/documents/albums/$(albumId)).data.memberIds;
     }
 
-    function isAlbumMember(albumId) {
-      return signedIn() && request.auth.uid in albumData(albumId).memberIds;
+    /** Use get() only when reading *other* docs (memories, invites), not the album doc itself. */
+    function isAlbumMemberId(albumId) {
+      return signedIn()
+        && albumId is string
+        && exists(/databases/$(database)/documents/albums/$(albumId))
+        && request.auth.uid in albumMemberIds(albumId);
     }
 
-    /** Invite accept: batch adds this uid to memberIds before they are a member. */
+    /** Accept emailed invite: batch does arrayUnion(uid) before uid is in memberIds. */
     function isJoiningAlbumAsSelf(albumId) {
       return signedIn()
-        && request.resource.data.keys().hasAll(["title", "memberIds", "createdBy", "createdAt"])
+        && request.resource.data.memberIds is list
+        && resource.data.memberIds is list
         && request.resource.data.title == resource.data.title
         && request.resource.data.createdBy == resource.data.createdBy
-        && request.resource.data.createdAt == resource.data.createdAt
         && request.auth.uid in request.resource.data.memberIds
         && !(request.auth.uid in resource.data.memberIds)
         && request.resource.data.memberIds.hasAll(resource.data.memberIds)
         && request.resource.data.memberIds.size() == resource.data.memberIds.size() + 1;
+    }
+
+    /** Invites store lowercase email; token casing may differ (e.g. Gmail). */
+    function inviteEmailMatchesAuth() {
+      return request.auth.token.email is string
+        && resource.data.email == request.auth.token.email.lower();
     }
 
     match /users/{userId} {
@@ -31,49 +41,55 @@ service cloud.firestore {
     }
 
     match /albums/{albumId} {
-      allow read: if isAlbumMember(albumId);
+      // List + get: avoid get(self) — use resource.memberIds (works with array-contains queries).
+      allow read: if signedIn()
+        && resource.data.memberIds is list
+        && request.auth.uid in resource.data.memberIds;
+
       allow create: if signedIn()
         && request.resource.data.keys().hasAll(["title", "memberIds", "createdBy"])
         && request.resource.data.title is string
         && request.resource.data.memberIds is list
         && request.auth.uid in request.resource.data.memberIds
         && request.resource.data.createdBy == request.auth.uid;
+
       allow update: if signedIn() && (
-        isAlbumMember(albumId) ||
+        (resource.data.memberIds is list && request.auth.uid in resource.data.memberIds) ||
         isJoiningAlbumAsSelf(albumId)
       );
+
       allow delete: if signedIn() && request.auth.uid == resource.data.createdBy;
     }
 
     match /memories/{memoryId} {
-      allow read: if signedIn() && isAlbumMember(resource.data.albumId);
+      allow read: if signedIn() && isAlbumMemberId(resource.data.albumId);
 
       allow create: if signedIn()
         && request.resource.data.keys().hasAll(["albumId", "type", "title", "date", "createdBy"])
         && request.resource.data.albumId is string
         && (request.resource.data.type == "polaroid" || request.resource.data.type == "orb")
-        && isAlbumMember(request.resource.data.albumId)
+        && isAlbumMemberId(request.resource.data.albumId)
         && request.resource.data.createdBy == request.auth.uid;
 
-      allow update, delete: if signedIn() && isAlbumMember(resource.data.albumId);
+      allow update, delete: if signedIn() && isAlbumMemberId(resource.data.albumId);
     }
 
     match /albumInvites/{inviteId} {
       allow read: if signedIn() && (
-        request.auth.token.email == resource.data.email ||
-        isAlbumMember(resource.data.albumId)
+        inviteEmailMatchesAuth() ||
+        isAlbumMemberId(resource.data.albumId)
       );
 
       allow create: if signedIn()
         && request.resource.data.keys().hasAll(["albumId", "email", "createdBy"])
         && request.resource.data.albumId is string
         && request.resource.data.email is string
-        && isAlbumMember(request.resource.data.albumId)
+        && isAlbumMemberId(request.resource.data.albumId)
         && request.resource.data.createdBy == request.auth.uid;
 
       allow delete: if signedIn() && (
-        request.auth.token.email == resource.data.email ||
-        isAlbumMember(resource.data.albumId)
+        inviteEmailMatchesAuth() ||
+        isAlbumMemberId(resource.data.albumId)
       );
     }
   }
